@@ -132,7 +132,7 @@ private class GetEducation(val con:Context,techList: ListView,langList: ListView
             try {
                 val stream = BufferedInputStream(httpClient.inputStream)
                 val data: String = readStream(inputStream = stream)
-                println("DATA RESPONSE: $data")
+                //println("DATA RESPONSE: $data")
                 return data
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -160,23 +160,29 @@ private class GetEducation(val con:Context,techList: ListView,langList: ListView
         val language = JSONObject(result).getJSONArray("language")
         val courses = JSONObject(result).getJSONArray("course")
 
-        println("TECHS: ${techs}")
+        //println("TECHS: ${techs}")
         var strTech=ArrayList<String>()
         var strLang=ArrayList<String>()
         var strCour=ArrayList<String>()
         for(n in 0 until techs.length())
         {
-            var jsonObject = techs.get(n).toString()
+            var jsonObject = techs.get(n).toString().replace("[", "")
+                .replace("]", "")
+                .replace("\"", "")
             strTech.add(jsonObject)
         }
         for(n in 0 until language.length())
         {
-            var jsonObject = language.get(n).toString()
+            var jsonObject = language.get(n).toString().replace("[", "")
+                .replace("]", "")
+                .replace("\"", "")
             strLang.add(jsonObject)
         }
         for(n in 0 until courses.length())
         {
-            var jsonObject = courses.get(n).toString()
+            var jsonObject = courses.get(n).toString().replace("[", "")
+                .replace("]", "")
+                .replace("\"", "")
             strCour.add(jsonObject)
         }
 
