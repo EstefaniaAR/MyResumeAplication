@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">MyResumeAplication</string>
+    <string name="app_name">MyResumeApplication</string>
+    <string name="profile">Profile</string>
+    <string name="edu">Education</string>
+    <string name="exp">Experience</string>
+    <string name="name">Name</string>
+    <string name="objective">Objective</string>
+    <string name="title">Title</string>
+    <string name="bachelor">Bachelor\'s degree</string>
+    <string name="master">Master\'s degree</string>
+    <string name="date">Date</string>
+    <string name="enterprise">Enterprise</string>
+    <string name="position">Position</string>
+    <string name="task">Task</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

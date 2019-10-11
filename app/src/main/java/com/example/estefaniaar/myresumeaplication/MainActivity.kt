@@ -5,76 +5,69 @@ import android.os.Bundle
 import java.net.URL
 import org.json.JSONObject
 import android.os.AsyncTask
+import android.support.design.widget.BottomNavigationView
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.BufferedInputStream
 import java.net.HttpURLConnection
 
 
 class MainActivity : AppCompatActivity() {
 
+    val overviewFragment:OverviewFragment=OverviewFragment()
+    val experienceFragment:ExperienceFragment= ExperienceFragment()
+    val educationFragment:EducationFragment=EducationFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         println("CREATING ACTIVITY....")
 
-        GetWeatherTask(findViewById(R.id.text)).execute()
-
+        bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.fragment_container,overviewFragment)
+            .addToBackStack(null)
+            .commit()
     }
-}
-private class GetWeatherTask(textView: TextView) : AsyncTask<Unit, Unit, String>() {
 
-    val innerTextView: TextView? = textView
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.prof->{
 
-    override fun doInBackground(vararg params: Unit?): String? {
-        val url = URL("https://gist.githubusercontent.com/EstefaniaAR/daa98710a94d0e8f62a8663cca6a8583/raw/38fb5c097a495eeffde6d8c70f21bb7f18a29797/resume.json")
-        val httpClient = url.openConnection() as HttpURLConnection
-        if (httpClient.responseCode == HttpURLConnection.HTTP_OK) {
-            try {
-                val stream = BufferedInputStream(httpClient.inputStream)
-                val data: String = readStream(inputStream = stream)
-                println("DATA RESPONSE: $data")
-                return data
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                httpClient.disconnect()
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container,overviewFragment)
+                    .addToBackStack(null)
+                    .commit()
+                bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                true
             }
-        } else {
-            println("ERROR ON RESPONSE: ${httpClient.responseCode}")
+            R.id.exp->{
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container,experienceFragment)
+                    .addToBackStack(null)
+                    .commit()
+                bottomNavigationView.getMenu().getItem(2).setChecked(true);
+                true
+            }
+            R.id.edu->{
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container,educationFragment)
+                    .addToBackStack(null)
+                    .commit()
+                bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                true
+            }
+
         }
-        return null
+        false
     }
 
-    fun readStream(inputStream: BufferedInputStream): String {
-        val bufferedReader = BufferedReader(InputStreamReader(inputStream))
-        val stringBuilder = StringBuilder()
-        bufferedReader.forEachLine { stringBuilder.append(it) }
-        return stringBuilder.toString()
-    }
-
-    override fun onPostExecute(result: String?) {
-        super.onPostExecute(result)
-
-
-        val name = JSONObject(result).get("name").toString()
-        val position = JSONObject(result).get("position").toString()
-        val objective = JSONObject(result).get("objective").toString()
-        val experience = JSONObject(result).getJSONArray("experience")
-        val technologies = JSONObject(result).getJSONArray("technologies")
-        val language = JSONObject(result).getJSONArray("language")
-        val bachelor = JSONObject(result).get("bachelor").toString()
-        val master = JSONObject(result).get("master").toString()
-        val courses = JSONObject(result).getJSONArray("course")
-        val certifications = JSONObject(result).getJSONArray("technologies")
-
-        innerTextView?.text = technologies.toString()
-        /**
-         * ... Work with the weather data
-         */
-
-    }
 }
 
 
